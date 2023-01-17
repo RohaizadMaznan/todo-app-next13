@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { ITodoInputProps } from "@/app/page";
 import { SmallCloseIcon, CheckIcon } from "@chakra-ui/icons";
 import { Box, Flex, Text, IconButton, Tooltip } from "@chakra-ui/react";
@@ -77,8 +78,7 @@ export const ToDoItem = ({ todo }: { todo: ITodoInputProps }) => {
       py={2}
       h="54px"
       color={todo.status ? "white" : "gray.800"}
-      borderRadius="2xl"
-    >
+      borderRadius="2xl">
       <Flex alignItems="center" justifyContent="space-between">
         <Text ml={4} color={todo.status ? "white" : "gray.800"}>
           {todo?.task}

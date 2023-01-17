@@ -1,4 +1,6 @@
-import { Home } from "@/pages/home";
+import React from "react";
+
+import Home from "@/pages/home";
 import { HOST_URL } from "api/TodoAPI";
 
 export type ITodoInputProps = {

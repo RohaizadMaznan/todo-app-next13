@@ -4,17 +4,13 @@ import React from "react";
 import { TimeIcon } from "@chakra-ui/icons";
 import {
   Input,
-  Heading,
-  Box,
   Flex,
-  IconButton,
   InputGroup,
   InputRightElement,
   Tooltip,
   FormErrorMessage,
   FormControl,
   useToast,
-  Text,
   Button,
 } from "@chakra-ui/react";
 import { ToDoItem } from "components/ToDoItem";
@@ -26,7 +22,7 @@ import moment from "moment";
 import { HOST_URL } from "api/TodoAPI";
 import { Header } from "components/Header";
 
-export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
+export default function Home({ todos }: { todos: ITodoInputProps[] }) {
   const router = useRouter();
   const toast = useToast();
   const timepickerRef = React.createRef<any>();
@@ -119,13 +115,11 @@ export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
                             onClick={() => {
                               timepickerRef.current.setOpen(true);
                             }}
-                            children={
-                              watch("time")
-                                ? moment(watch("time")).format("hh:mm A")
-                                : "00:00 am"
-                            }
-                            w="auto"
-                          />
+                            w="auto">
+                            {watch("time")
+                              ? moment(watch("time")).format("hh:mm A")
+                              : "00:00 am"}
+                          </Button>
                         </Tooltip>
                       }
                     />
@@ -149,4 +143,4 @@ export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
       </Flex>
     </Flex>
   );
-};
+}

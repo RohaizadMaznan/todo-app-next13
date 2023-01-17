@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import "./globals.css";
 import { ChakraProvider, Box, useColorModeValue } from "@chakra-ui/react";
 import theme from "theme";
@@ -19,8 +21,7 @@ export default function RootLayout({
             bg={useColorModeValue("#987EFF", "gray.700")}
             h="100vh"
             w="full"
-            color="white"
-          >
+            color="white">
             {children}
           </Box>
         </ChakraProvider>
