@@ -4,6 +4,8 @@ import { ITodoInputProps } from "@/app/page";
 import { SmallCloseIcon, CheckIcon } from "@chakra-ui/icons";
 import { Box, Flex, Text, IconButton, Tooltip } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
+import { HOST_URL } from "api/TodoAPI";
+import moment from "moment";
 import { useRouter } from "next/navigation";
 
 export const ToDoItem = ({ todo }: { todo: ITodoInputProps }) => {
@@ -11,15 +13,12 @@ export const ToDoItem = ({ todo }: { todo: ITodoInputProps }) => {
   const toast = useToast();
   const onRemoveTodo = async () => {
     try {
-      await fetch(
-        `http://127.0.0.1:8090/api/collections/todos/records/${todo.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await fetch(`${HOST_URL}/todos/records/${todo.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       toast({
         title: "Removed",
@@ -42,18 +41,15 @@ export const ToDoItem = ({ todo }: { todo: ITodoInputProps }) => {
 
   const onMarkAsDone = async () => {
     try {
-      await fetch(
-        `http://127.0.0.1:8090/api/collections/todos/records/${todo.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            status: !todo.status,
-          }),
-        }
-      );
+      await fetch(`${HOST_URL}/todos/records/${todo.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: !todo.status,
+        }),
+      });
       toast({
         title: todo.status ? "Marked as undone" : "Marked as done",
         status: "success",
@@ -87,7 +83,8 @@ export const ToDoItem = ({ todo }: { todo: ITodoInputProps }) => {
         <Text ml={4} color={todo.status ? "white" : "gray.800"}>
           {todo?.task}
         </Text>
-        <Flex gap={2}>
+        <Flex gap={2} alignItems="center">
+          <Text>{moment(todo.time).format("hh:mm A")}</Text>
           <Tooltip label={todo.status ? `Mark as Undone` : `Mark as Done`}>
             <IconButton
               variant={todo.status ? "solid" : "ghost"}

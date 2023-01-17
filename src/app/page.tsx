@@ -1,4 +1,5 @@
 import { Home } from "@/pages/home";
+import { HOST_URL } from "api/TodoAPI";
 
 export type ITodoInputProps = {
   id: string;
@@ -10,10 +11,7 @@ export type ITodoInputProps = {
 };
 
 async function getTodos() {
-  const res = await fetch(
-    "http://127.0.0.1:8090/api/collections/todos/records",
-    { cache: "no-store" }
-  );
+  const res = await fetch(`${HOST_URL}/todos/records`, { cache: "no-store" });
   const data = await res.json();
   return data?.items as ITodoInputProps[];
 }

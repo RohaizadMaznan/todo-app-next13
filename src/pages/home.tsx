@@ -15,6 +15,7 @@ import {
   FormControl,
   useToast,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import { ToDoItem } from "components/ToDoItem";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -22,6 +23,8 @@ import { ITodoInputProps } from "@/app/page";
 import { useRouter } from "next/navigation";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import { HOST_URL } from "api/TodoAPI";
+import { Header } from "components/Header";
 
 export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
   const router = useRouter();
@@ -36,16 +39,15 @@ export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
     control,
     watch,
   } = useForm<ITodoInputProps>();
-  console.log("time", watch("time"));
 
   const onSubmit: SubmitHandler<ITodoInputProps> = async (data) => {
-    await fetch("http://127.0.0.1:8090/api/collections/todos/records", {
+    await fetch(`${HOST_URL}/todos/records`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        task: data.task,
+        ...data,
         status: false,
       }),
     });
@@ -65,12 +67,7 @@ export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
   return (
     <Flex justifyContent="center">
       <Flex flexDir="column" gap={5} pt={5} w="calc(100vw - 50%)">
-        <Box textAlign="left" mb={5}>
-          <Heading size="lg" fontWeight="medium">
-            Today main focus
-          </Heading>
-          <Heading size="xl">Design team meeting</Heading>
-        </Box>
+        <Header />
 
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <FormControl zIndex="10" isInvalid={errors.task ? true : false}>
@@ -94,16 +91,7 @@ export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
                 }}
                 borderRadius="2xl"
               />
-              <InputRightElement
-                justifyContent="flex-end"
-                alignItems="flex-end"
-                mr={3}
-                mt="6px"
-                gap={2}
-              >
-                <Text color="gray.800" fontSize="sm">
-                  {watch("time") && moment(watch("time")).format("h:mm a")}
-                </Text>
+              <InputRightElement w="auto" mr={3} mt="6px">
                 <Controller
                   control={control}
                   name="time"
@@ -119,11 +107,11 @@ export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
                       dateFormat="h:mm aa"
                       customInput={
                         <Tooltip label={`Select a date`}>
-                          <IconButton
+                          <Button
                             variant="ghost"
                             colorScheme="success"
                             aria-label="Select a time"
-                            icon={<TimeIcon />}
+                            leftIcon={<TimeIcon />}
                             _hover={{
                               backgroundColor: "gray.200",
                               color: "primary.700",
@@ -131,6 +119,12 @@ export const Home = ({ todos }: { todos: ITodoInputProps[] }) => {
                             onClick={() => {
                               timepickerRef.current.setOpen(true);
                             }}
+                            children={
+                              watch("time")
+                                ? moment(watch("time")).format("hh:mm A")
+                                : "00:00 am"
+                            }
+                            w="auto"
                           />
                         </Tooltip>
                       }
