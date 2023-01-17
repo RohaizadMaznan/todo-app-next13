@@ -1,18 +1,30 @@
-import './globals.css'
+"use client";
+
+import "./globals.css";
+import { ChakraProvider, Box, useColorModeValue } from "@chakra-ui/react";
+import theme from "theme";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      {/*
-        <head /> will contain the components returned by the nearest parent
-        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
       <head />
-      <body>{children}</body>
+      <body>
+        <ChakraProvider theme={theme}>
+          <Box
+            bg={useColorModeValue("#987EFF", "gray.700")}
+            h="100vh"
+            w="full"
+            color="white"
+          >
+            {children}
+          </Box>
+        </ChakraProvider>
+      </body>
     </html>
-  )
+  );
 }
